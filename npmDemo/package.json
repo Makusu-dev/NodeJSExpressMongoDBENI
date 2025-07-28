@@ -1,0 +1,21 @@
+{
+  "name": "small-project",
+  "version": "0.0.1",
+  "description": "npm demo project",
+  "main": "app.js",
+  "scripts": {
+    "start": "app.js",
+    "test": "test",
+    "serve": "nodemon server.js"
+  },
+  "keywords": [
+    "demo",
+    "npm"
+  ],
+  "author": "Maxime Jeannin",
+  "license": "MIT",
+  "dependencies": {
+    "french-ssn": "^4.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
