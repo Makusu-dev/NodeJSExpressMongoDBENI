@@ -3,12 +3,12 @@ let router = express.Router();
 const { validationResult, body } = require('express-validator');
 const userStorage = require('../storage/users');
 const argon2 = require('argon2');
+const session = require("express-session");
 
 let user = {
   email:'',
   password:'',
 }
-
 let error=[];
 
 
@@ -39,11 +39,12 @@ router.post('/create',body('email').isEmail().withMessage('Please provide a vali
       console.log(user);
       //Save user in database
       userStorage.addUser(user.email,argon2.hash(user.password));
-      res.render('index',{user:user});
+      req.session.user=user;
+      res.redirect('../');
   }
     console.log(err);
     error=result.array();
-    res.render('user-create',{error:error,user:user})
+    res.render('user-create',{error:error})
 })
 
 

@@ -3,16 +3,35 @@ let router = express.Router();
 const { validationResult, body } = require('express-validator');
 const userStorage = require('../storage/users');
 const argon2 = require('argon2');
+const session = require("express-session");
+let error=[];
 
 router.get('/', function (req, res) {
   res.render('login')
 })
 
-router.post('/login',body('email').isEmail().withMessage('Please provide a valid email'),body('email').custom((value, { req }) => {
-  let checkEmail=userStorage.findByEmail(value);
-  return checkEmail;
-}).withMessage('email does not exists in the database'), function (req, res) {
-  //passer un utilisateur en session
+
+
+router.post('/',body('email').isEmail().withMessage('Please provide a valid email'), function (req, res) {
+  valResult = validationResult(req);
+  if (valResult.isEmpty()) {
+    //Vérifier mot de passe et email
+    inputUser = userStorage.findByEmail(req.body.email);
+    if(inputUser && argon2.verify(inputUser.password,req.body.password)){
+      //passer un utilisateur en session
+      req.session.user = inputUser;
+      console.log("password and mail are matching");
+      res.redirect('/index');
+    }
+    else{
+      console.log("no match");
+      error.push({path: 'email', msg:'email and password doesn\'t match'});
+      res.render('login',{error:error});
+    }
+  }
+  res.error=valResult.array();
+  console.log(res.error);
+  res.render('login',{error:res.error})
 })
 
 
