@@ -24,15 +24,15 @@
                     <label for="response" class="form-label">Se connecter</label>
                     <input type="text" class="form-control my-2" id="email" placeholder="email" name="email">
                     <% if (typeof error != 'undefined' && error.find(err => err.path==='email') ) { %>
-                        <div class="alert alert-danger" role="alert">
+                        <p class="text-danger" >
                             <%= error.find(err => err.path='email').msg %>
-                        </div>
+                        </p>
                     <% } %>
                     <input type="text" class="form-control my-2" id="password" placeholder="password" name="password">
                     <% if (typeof error != 'undefined' && error.find(err => err.path==='password') ) { %>
-                        <div class="alert alert-danger" role="alert">
+                        <p class="text-error">
                             <%= error.find(err => err.path='password').msg %>
-                        </div>
+                        </p>
                     <% } %>
                     <button type="submit" class="btn btn-secondary">Se connecter</button>
                     <a href="/users/create" class="btn btn-primary " role="button" aria-disabled="false">Créer un compte</a>

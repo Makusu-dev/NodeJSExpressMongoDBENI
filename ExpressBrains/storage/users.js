@@ -14,6 +14,13 @@ const users = [
       '$argon2id$v=19$m=65536,t=3,p=4$jzQB9YoLnTyZpL66ZxWcYA$KaL4B8QM0Ni87d8bhK1bRM8O1lwU1f9H/SPSX9S4rlQ',
     role: 'user',
   },
+  {
+    uuid: uuid.v4(),
+    email: 'maxime.jeannin@mail.com',
+    password:
+      '$argon2id$v=19$m=65536,t=3,p=4$a/S4YlMok2fjm90BQdTtpw$ogkluyFQIdzchfTyeaAGsX+fjvaO4dcUpm9uMCaxYos',
+    role: 'admin',
+  },
 ]
 
 module.exports = {

@@ -4,6 +4,7 @@ const { validationResult, body } = require('express-validator');
 const userStorage = require('../storage/users');
 const argon2 = require('argon2');
 const session = require("express-session");
+const { hash } = require('argon2');
 
 let user = {
   email:'',
@@ -31,20 +32,27 @@ router.post('/create',body('email').isEmail().withMessage('Please provide a vali
                               let checkEmail=userStorage.findByEmail(value);
                               return !checkEmail;
                             }).withMessage('email already exists in the database'),
-  (req, res, err) => {
+  async function(req, res, err) {
   result=validationResult(req);
   if(result.isEmpty()) {
       user.email=req.body.email;
       user.password=req.body.password;
       console.log(user);
       //Save user in database
-      userStorage.addUser(user.email,argon2.hash(user.password));
-      req.session.user=user;
-      res.redirect('../');
+      try {
+        const hash = await argon2.hash(user.password);
+        userStorage.addUser(user.email,hash);
+        req.session.user=user;
+        res.redirect('../');
+      } catch (err) {
+        error.push(err);
+      }
   }
+  else {
     console.log(err);
     error=result.array();
     res.render('user-create',{error:error})
+  }
 })
 
 
