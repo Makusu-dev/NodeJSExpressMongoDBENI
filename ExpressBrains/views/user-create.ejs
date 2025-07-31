@@ -24,21 +24,27 @@
                     <label for="response" class="form-label">Créer un compte</label>
                     <input type="text" class="form-control my-2" id="email" placeholder="email" name="email">
                     <% if (typeof error != 'undefined' && error.find(err => err.path==='email') ) { %>
-                        <div class="alert alert-danger" role="alert">
+                        <p class="text-danger" role="alert">
                             <%= error.find(err => err.path='email').msg %>
-                        </div>
+                        </p>
+                    <% } %>
+                    <input type="text" class="form-control my-2" id="pseudo" placeholder="pseudo" name="pseudo">
+                    <% if (typeof error != 'undefined' && error.find(err => err.path==='pseudo') ) { %>
+                        <p class="text-danger" role="alert">
+                            <%= error.find(err => err.path='email').msg %>
+                        </p>
                     <% } %>
                     <input type="text" class="form-control my-2" id="password" placeholder="password" name="password">
                     <% if (typeof error != 'undefined' && error.find(err => err.path==='password') ) { %>
-                        <div class="alert alert-danger" role="alert">
+                        <p class="text-danger" role="alert">
                             <%= error.find(err => err.path='password').msg %>
-                        </div>
+                        </p>
                     <% } %>
                     <input type="text" class="form-control my-2" id="passwordConfirm" placeholder="confirm password" name="passwordConfirm">
                     <% if (typeof error != 'undefined' && error.find(err => err.path==='passwordConfirm') ) { %>
-                        <div class="alert alert-danger" role="alert">
+                        <p class="text-danger" role="alert">
                             <%= error.find(err => err.path='passwordConfirm').msg %>
-                        </div>
+                        </p>
                     <% } %>
                     <button type="submit" class="btn btn-secondary">Créer un compte</button>
                 </form>

@@ -1,10 +1,11 @@
 let express = require('express');
 let router = express.Router();
 const { validationResult, body } = require('express-validator');
-const userStorage = require('../storage/users');
+const userStorage = require('../storage/usersDB');
 const argon2 = require('argon2');
-const session = require("express-session");
+const { User } = require('../models/User');
 let error=[];
+
 
 router.get('/', function (req, res) {
   res.render('login')
@@ -16,7 +17,7 @@ router.post('/',body('email').isEmail().withMessage('Please provide a valid emai
   valResult = validationResult(req);
   if (valResult.isEmpty()) {
     //Vérifier mot de passe et email
-    inputUser = userStorage.findByEmail(req.body.email);
+    inputUser = await userStorage.findByEmail(req.body.email);
     console.log(inputUser);
 
     try {

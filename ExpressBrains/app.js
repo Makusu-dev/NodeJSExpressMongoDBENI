@@ -7,6 +7,7 @@ let logger = require('morgan');
 
 const flash = require('connect-flash');
 const session = require("express-session");
+const connection = require("./utils/connection");
 const tryNumberService = require('./services/try-number');
 const randomNumberService = require('./services/random-number');
 
@@ -24,8 +25,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const loginRouter= require('./routes/login');
+const teamRouter= require('./routes/teams');
 
-
+connection.connectToDb();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -57,6 +59,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/teams', teamRouter)
 
 
 

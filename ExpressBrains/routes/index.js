@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { validationResult, body } = require('express-validator');
 const tryNumberService = require('../services/try-number');
 const randomNumberService = require('../services/random-number');
-const { ResultTypes } = require('../enums/result-types')
 
 
 
@@ -13,7 +11,7 @@ let numberToFind ;
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/',async function(req, res, next) {
   if (!numberToFind){
     numberToFind=randomNumberService.RandomNumber.generate();
     console.log('generated number: '+ numberToFind);
@@ -22,18 +20,23 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/',(req,res,err)=>{
-  console.log(parseInt(req.body.attempt));
-  const tryNumberResponse = tryNumberService.tryNumber(parseInt(req.body.attempt),numberToFind);
-  console.log(err);
-  // err.message = tryNumberResponse.text
-  if(tryNumberResponse.resultType === ResultTypes.CORRECT){
-    req.flash('success',tryNumberResponse.text);
+  // console.log(parseInt(req.body.attempt));
+  const playAgain = req.body.playAgain;
+  if(playAgain){
+    numberToFind=randomNumberService.RandomNumber.generate();
+    console.log('generated number: '+ numberToFind);
+    res.render('index');
   }
   else{
-    req.flash('error', tryNumberResponse.text);
+    const tryNumberResponse = tryNumberService.tryNumber(parseInt(req.body.attempt),numberToFind);
+    res.render('index', { result: tryNumberResponse })
   }
-
- res.redirect('/')
+  // if(tryNumberResponse.resultType === ResultTypes.CORRECT){
+  //   req.flash('success',tryNumberResponse.text);
+  // }
+  // else{
+  //   req.flash('error', tryNumberResponse.text);
+  // }
 })
 
 router.get('/logout', function (req, res) {
